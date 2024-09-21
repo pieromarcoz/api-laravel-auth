@@ -13,8 +13,8 @@ class UserRepository implements UserRepositoryInterface
         return User::create($data);
     }
 
-    public function login(array $data)
+    public function findByEmail(string $email)
     {
-        return User::where('email', $data['email'])->where('password', $data['password'])->first();
+        return User::where('email', $email)->first();
     }
 }

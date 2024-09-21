@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Auth\LoginRequestUser;
 use App\Http\Requests\Auth\StoreRequestUser;
 use App\Http\Responses\ApiResponse;
 use App\Services\AuthService;
@@ -24,7 +25,7 @@ class AuthController extends Controller
             return ApiResponse::error('Error al registrar usuario', [$e->getMessage()]);
         }
     }
-    public function login(StoreRequestUser $request)
+    public function login(LoginRequestUser $request)
     {
         try {
             $token = $this->authService->login($request->validated());

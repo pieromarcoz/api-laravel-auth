@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repositories\Interfaces\UserInterface;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class AuthService
 {
@@ -23,7 +24,14 @@ class AuthService
 
     public function login(array $data)
     {
-        $user = $this->userRepo->login($data);
+        $user = $this->userRepo->findByEmail($data['email']);
+
+        if (!$user || !Hash::check($data['password'], $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['Las credenciales proporcionadas son incorrectas.'],
+            ]);
+        }
+
         return $user->createToken('auth_token')->plainTextToken;
     }
 }
